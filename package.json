@@ -1,0 +1,8 @@
+{
+  "name": "shop-system-monorepo",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --filter api start:dev",
+    "prisma": "pnpm --filter api exec prisma"
+  }
+}

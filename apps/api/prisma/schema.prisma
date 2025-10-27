@@ -1,0 +1,129 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// --- Enums ---
+enum Role {
+  USER
+  ADMIN
+}
+
+enum Category {
+  ELECTRONICS
+  BOOKS
+  CLOTHING
+}
+
+enum OrderStatus {
+  PENDING
+  SHIPPED
+  DELIVERED
+  CANCELED
+}
+
+// --- Models ---
+
+model User {
+  id          Int      @id @default(autoincrement())
+  firstname   String
+  lastname    String
+  phoneNumber String
+  email       String   @unique
+  username    String   @unique
+  password    String
+  role        Role
+  bucket_id   Int      @unique
+
+  bucket Bucket   @relation(fields: [bucket_id], references: [id])
+  orders Ordering[]
+
+  @@map("user")
+}
+
+model Bucket {
+  id Int @id @default(autoincrement())
+
+  user     User?
+  products ProductsInBuckets[]
+
+  @@map("bucket")
+}
+
+model Product {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String
+  price       Decimal
+  category    Category
+  urlImage    String   @map("urlimage")
+
+  buckets    ProductsInBuckets[]
+  locations  ProductLocation[]
+  orderItems ProductInOrder[]
+
+  @@map("product")
+}
+
+model ProductsInBuckets {
+  product_id Int
+  bucket_id  Int
+
+  product Product @relation(fields: [product_id], references: [id])
+  bucket  Bucket  @relation(fields: [bucket_id], references: [id])
+
+  @@id([product_id, bucket_id])
+  @@map("products_buckets")
+}
+
+model Ordering {
+  id        Int         @id @default(autoincrement())
+  orderDate DateTime    @map("orderDate")
+  status    OrderStatus
+  user_id   Int
+
+  user  User             @relation(fields: [user_id], references: [id])
+  items ProductInOrder[]
+
+  @@map("ordering")
+}
+
+model ProductInOrder {
+  id          Int     @id @default(autoincrement())
+  quantity    Int
+  totalCost   Decimal @map("totalCost")
+  product_id  Int
+  ordering_id Int
+
+  product  Product  @relation(fields: [product_id], references: [id])
+  ordering Ordering @relation(fields: [ordering_id], references: [id])
+
+  @@map("productInOrder")
+}
+
+model Warehouse {
+  id      Int     @id @default(autoincrement())
+  title   String
+  address String
+
+  locations ProductLocation[]
+
+  @@map("warehouse")
+}
+
+model ProductLocation {
+  id           Int @id @default(autoincrement())
+  quantity     Int
+  product_id   Int
+  warehouse_id Int
+
+  product   Product   @relation(fields: [product_id], references: [id])
+  warehouse Warehouse @relation(fields: [warehouse_id], references: [id])
+
+  @@map("productLocation")
+  @@unique([product_id, warehouse_id])
+}
