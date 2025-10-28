@@ -16,6 +16,11 @@ export class WarehouseController {
     return this.warehouseService.getAllWarehouses();
   }
 
+  @Get(':id')
+  findWarehouseById(@Param('id', ParseIntPipe) id: number) {
+    return this.warehouseService.findWarehouseById(id);
+  }
+
   @Patch(':id')
   updateWarehouse(@Param('id', ParseIntPipe) id: number, @Body() updateWarehouseDto: UpdateWarehouseDto) {
     return this.warehouseService.updateWarehouse(id, updateWarehouseDto);

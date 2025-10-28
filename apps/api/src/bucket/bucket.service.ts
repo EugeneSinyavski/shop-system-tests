@@ -1,6 +1,7 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { UpdateBucketDto } from 'dto';
 import { PrismaService } from '../prisma/prisma.service';
+import { BucketNotFoundException } from '../common/exceptions/bucket-not-found.exception';
 
 @Injectable()
 export class BucketService {
@@ -21,7 +22,7 @@ export class BucketService {
     });
 
     if (!bucket) {
-      throw new NotFoundException(`Bucket for user ${userId} not found`);
+      throw new BucketNotFoundException(userId);
     }
     return bucket;
   }

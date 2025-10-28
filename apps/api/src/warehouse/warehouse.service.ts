@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateWarehouseDto, UpdateInventoryDto, UpdateWarehouseDto } from 'dto';
+import { WarehouseNotFoundException } from '../common/exceptions/warehouse-not-found.exception';
 
 @Injectable()
 export class WarehouseService {
@@ -12,6 +13,17 @@ export class WarehouseService {
 
   getAllWarehouses() {
     return this.prisma.warehouse.findMany();
+  }
+
+  async findWarehouseById(id: number) {
+    const warehouse = await this.prisma.warehouse.findUnique({
+      where: { id }
+    });
+
+    if (!warehouse) {
+      throw new WarehouseNotFoundException(id);
+    }
+    return warehouse;
   }
 
   updateWarehouse(id: number, updateWarehouseDto: UpdateWarehouseDto) {
