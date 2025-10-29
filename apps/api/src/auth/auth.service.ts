@@ -68,7 +68,7 @@ export class AuthService {
     return result;
   }
 
-  private async _validateUserExistsById(userId: number): Promise<User> { // <-- Новое имя
+  private async _validateUserExistsById(userId: number): Promise<User> {
     const user = await this.prisma.user.findUnique({
       where: { id: userId },
     });

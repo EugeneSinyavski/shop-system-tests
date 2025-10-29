@@ -8,12 +8,12 @@ export class ProductService {
 
   constructor(private prisma: PrismaService) {}
 
-  createProduct(createProductDto: CreateProductDto) {
-    return this.prisma.product.create({data: createProductDto})
+  async createProduct(createProductDto: CreateProductDto) {
+    return await this.prisma.product.create({data: createProductDto})
   }
 
-  findAllProducts() {
-    return this.prisma.product.findMany();
+  async findAllProducts() {
+    return await this.prisma.product.findMany();
   }
 
   async findProductById(id: number) {
@@ -22,12 +22,12 @@ export class ProductService {
 
   async updateProduct(id: number, updateProductDto: UpdateProductDto) {
     await this.verifyProductExists(id);
-    return this.prisma.product.update({ where: { id }, data: updateProductDto });
+    return await this.prisma.product.update({ where: { id }, data: updateProductDto });
   }
 
   async removeProduct(id: number) {
     await this.verifyProductExists(id);
-    return this.prisma.product.delete({ where: { id} })
+    return await this.prisma.product.delete({ where: { id} })
   }
 
   private async verifyProductExists(id: number) {
