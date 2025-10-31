@@ -2,10 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { UpdateBucketDto } from 'dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { BucketNotFoundException } from '../common/exceptions/bucket-not-found.exception';
+import { ProductService } from '../product/product.service';
+import { ProductNotFoundException } from '../common/exceptions/product-not-found.exception';
 
 @Injectable()
 export class BucketService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private productService: ProductService) {}
 
   async findBucketByUserId(userId: number) {
     const bucket = await this.prisma.bucket.findFirst({
@@ -30,6 +34,8 @@ export class BucketService {
   async addProductToBucket(userId: number, dto: UpdateBucketDto) {
     const bucket = await this.findBucketByUserId(userId);
 
+    await this.productService.findProductById(dto.productId);
+
     return this.prisma.productsInBuckets.upsert({
       where: {
         product_id_bucket_id: {
@@ -48,10 +54,25 @@ export class BucketService {
   async removeProductFromBucket(userId: number, dto: UpdateBucketDto) {
     const bucket = await this.findBucketByUserId(userId);
 
-    return this.prisma.productsInBuckets.deleteMany({
+    const itemInBucket = await this.prisma.productsInBuckets.findUnique({
       where: {
-        bucket_id: bucket.id,
-        product_id: dto.productId,
+        product_id_bucket_id: {
+          product_id: dto.productId,
+          bucket_id: bucket.id
+        }
+      }
+    });
+
+    if (!itemInBucket) {
+      throw new ProductNotFoundException(dto.productId);
+    }
+
+    return this.prisma.productsInBuckets.delete({
+      where: {
+        product_id_bucket_id: {
+          bucket_id: bucket.id,
+          product_id: dto.productId,
+        },
       },
     });
   }

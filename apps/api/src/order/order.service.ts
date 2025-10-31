@@ -4,12 +4,18 @@ import { PrismaService } from '../prisma/prisma.service';
 import { CreateOrderDto, OrderStatus, UpdateOrderDto } from 'dto';
 import { OrderProductNotFoundException } from '../common/exceptions/order-product-not-found.exception';
 import { ProductNotFoundException } from '../common/exceptions/product-not-found.exception';
+import { AuthService } from '../auth/auth.service';
+import { OrderNotFoundException } from '../common/exceptions/order-not-found.exception';
 
 @Injectable()
 export class OrderService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private authService: AuthService) {}
 
   async createOrder(userId: number, dto: CreateOrderDto) {
+
+    await this.authService['_validateUserExistsById'](userId);
 
     const productsFromDb = await this._validateProductsExist(dto);
 
@@ -31,6 +37,8 @@ export class OrderService {
   }
 
   async findOrdersByUserId(userId: number) {
+    await this.authService['_validateUserExistsById'](userId);
+
     return this.prisma.ordering.findMany({
       where: { user_id: userId },
       include: {
@@ -44,6 +52,14 @@ export class OrderService {
   }
 
   async updateOrderStatus(orderId: number, dto: UpdateOrderDto) {
+    const order = await this.prisma.ordering.findUnique({
+      where: { id: orderId }
+    });
+
+    if (!order) {
+      throw new OrderNotFoundException(orderId);
+    }
+
     return this.prisma.ordering.update({
       where: { id: orderId },
       data: { status: dto.status }

@@ -16,24 +16,24 @@ export class ProductService {
     return await this.prisma.product.findMany();
   }
 
-  async findProductById(id: number) {
-    return await this.verifyProductExists(id);
+  async findProductById(productId: number) {
+    return await this.verifyProductExists(productId);
   }
 
-  async updateProduct(id: number, updateProductDto: UpdateProductDto) {
-    await this.verifyProductExists(id);
-    return await this.prisma.product.update({ where: { id }, data: updateProductDto });
+  async updateProduct(productId: number, updateProductDto: UpdateProductDto) {
+    await this.verifyProductExists(productId);
+    return await this.prisma.product.update({ where: { id: productId }, data: updateProductDto });
   }
 
-  async removeProduct(id: number) {
-    await this.verifyProductExists(id);
-    return await this.prisma.product.delete({ where: { id} })
+  async removeProduct(productId: number) {
+    await this.verifyProductExists(productId);
+    return await this.prisma.product.delete({ where: { id: productId } })
   }
 
-  private async verifyProductExists(id: number) {
-    const product = await this.prisma.product.findUnique({ where: { id } });
+  private async verifyProductExists(productId: number) {
+    const product = await this.prisma.product.findUnique({ where: { id: productId } });
     if (!product) {
-      throw new ProductNotFoundException(id);
+      throw new ProductNotFoundException(productId);
     }
     return product;
   }
