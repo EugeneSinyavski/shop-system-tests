@@ -1,6 +1,9 @@
-import { IsEmail, IsEnum, IsNotEmpty, IsOptional, IsPhoneNumber, IsString, MinLength } from 'class-validator';
+import { IsEmail, IsEnum, IsNotEmpty, IsOptional, IsPhoneNumber, IsString, MinLength, Matches } from 'class-validator';
 import { Role } from './enums';
 import { ApiProperty } from '@nestjs/swagger';
+
+const phoneRegex = /^\+[1-9]\d{7,14}$/;
+const phoneMessage = 'phoneNumber must be in international format (starting with +)';
 
 export class CreateUserDto {
   @ApiProperty({ example: 'Ivan', description: "User's first name" })
@@ -14,6 +17,7 @@ export class CreateUserDto {
   lastname!: string;
 
   @ApiProperty({ example: '+1234567890', description: "User's phone number" })
+  @Matches(phoneRegex, { message: phoneMessage })
   @IsString()
   @IsNotEmpty()
   phoneNumber!: string;
@@ -50,6 +54,7 @@ export class UpdateUserDto {
   lastname?: string;
 
   @ApiProperty({ example: '+1987654321', description: "User's phone number", required: false })
+  @Matches(phoneRegex, { message: phoneMessage })
   @IsOptional()
   @IsPhoneNumber()
   phoneNumber?: string;

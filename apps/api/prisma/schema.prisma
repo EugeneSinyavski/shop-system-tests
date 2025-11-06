@@ -58,7 +58,7 @@ model Product {
   id          Int      @id @default(autoincrement())
   name        String
   description String
-  price       Decimal
+  price       Decimal @db.Decimal(10, 2)
   category    Category
   urlImage    String   @map("urlimage")
 
@@ -95,7 +95,7 @@ model Ordering {
 model ProductInOrder {
   id          Int     @id @default(autoincrement())
   quantity    Int
-  totalCost   Decimal @map("totalCost")
+  totalCost   Decimal @db.Decimal(10, 2) @map("totalCost")
   product_id  Int
   ordering_id Int
 
