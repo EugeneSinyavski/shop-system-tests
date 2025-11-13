@@ -1,5 +1,4 @@
-// apps/web/src/pages/Login.tsx
-import { LoginForm } from '@/components/auth/LoginForm' // (Создадим сейчас)
+import { LoginForm } from '@/components/auth/LoginForm'
 
 export default function LoginPage() {
     return (

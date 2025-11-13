@@ -6,9 +6,8 @@ import { Toaster } from 'sonner'
 
 import './index.css'
 
-// import RootLayout from './layouts/RootLayout'
 import LoginPage from './pages/Login'
-import HomePage from './pages/Home'
+import RootLayout from "@/layouts/RootLayout";
 
 // --- Настройка React Query ---
 const queryClient = new QueryClient()

@@ -1,13 +1,8 @@
-// apps/web/src/components/auth/LoginForm.tsx
 import { useForm } from 'react-hook-form'
 import { useMutation } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import { useNavigate } from 'react-router-dom'
 
-// Типы DTO из вашего OpenAPI
-import { UserLoginDto } from '@hairing/types' // Предполагая, что вы экспортируете типы
-
-// Компоненты Shadcn/UI (предполагая, что они у вас есть)
 import { Button } from '@/components/ui/button'
 import {
     Form,
@@ -25,55 +20,47 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card'
+import { UserLoginDto } from "dto/src";
 
-// --- Тип для формы (на основе DTO) ---
-type LoginFormValues = UserLoginDto // { email: string, password: string }
+type LoginFormValues = UserLoginDto
 
-// --- Асинхронная функция для запроса ---
 async function loginUser(data: LoginFormValues): Promise<any> {
-    const response = await fetch('/api/auth/login', { // Используем наш Proxy!
+    const response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
     })
 
     if (!response.ok) {
-        // (401 Invalid credentials)
         throw new Error('Неверный email или пароль')
     }
-
-    // (201 Login successful)
-    return response.json() // Возвращаем токен/данные пользователя
+    return response.json()
 }
 
 
 export function LoginForm() {
     const navigate = useNavigate()
 
-    // 1. Настройка формы
     const form = useForm<LoginFormValues>({
-        // (Здесь можно добавить resolver, например Zod)
         defaultValues: {
             email: '',
             password: '',
         },
     })
 
-    // 2. Настройка мутации (запроса)
     const mutation = useMutation({
         mutationFn: loginUser,
         onSuccess: (data) => {
             toast.success('Вход выполнен успешно!')
             // TODO: Сохранить токен (data.accessToken) в localStorage/cookie
             console.log('Login success:', data)
-            // navigate('/') // Перенаправляем на главную
+            // navigate('/')
         },
         onError: (error) => {
             toast.error(error.message || 'Произошла ошибка')
         },
     })
 
-    // 3. Обработчик отправки
     function onSubmit(values: LoginFormValues) {
         mutation.mutate(values)
     }
