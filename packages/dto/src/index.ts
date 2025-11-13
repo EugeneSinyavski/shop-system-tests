@@ -1,3 +1,5 @@
+// TODO: Refactor this entire DTO package to use Zod.
+export * from './user.types';
 export * from './enums';
 export * from './product.dto';
 export * from './user.dto';

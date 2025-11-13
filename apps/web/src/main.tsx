@@ -8,11 +8,10 @@ import './index.css'
 
 import LoginPage from './pages/Login'
 import RootLayout from "@/layouts/RootLayout";
+import RegisterPage from './pages/Register'
 
-// --- Настройка React Query ---
 const queryClient = new QueryClient()
 
-// --- Настройка Роутинга ---
 const router = createBrowserRouter([
     {
         path: '/',
@@ -20,7 +19,7 @@ const router = createBrowserRouter([
         children: [
             // { path: '/', element: <HomePage /> },
             { path: '/login', element: <LoginPage /> },
-            // ... (другие страницы)
+            { path: '/register', element: <RegisterPage /> },
         ],
     },
 ])

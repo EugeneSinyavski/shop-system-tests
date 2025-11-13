@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form'
 import { useMutation } from '@tanstack/react-query'
 import { toast } from 'sonner'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -20,9 +20,9 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card'
-import { UserLoginDto } from "dto/src";
+import { IUserLoginDto } from "dto/web";
 
-type LoginFormValues = UserLoginDto
+type LoginFormValues = IUserLoginDto
 
 async function loginUser(data: LoginFormValues): Promise<any> {
     const response = await fetch('/api/auth/login', {
@@ -113,6 +113,12 @@ export function LoginForm() {
                             {mutation.isPending ? 'Загрузка...' : 'Войти'}
                         </Button>
 
+                        <div className="mt-4 text-center text-sm">
+                            Нет аккаунта?{' '}
+                            <Link to="/register" className="underline">
+                                Зарегистрироваться
+                            </Link>
+                        </div>
                     </form>
                 </Form>
             </CardContent>
