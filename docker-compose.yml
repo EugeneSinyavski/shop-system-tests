@@ -2,46 +2,65 @@ services:
   postgres_db:
     image: postgres:15
     container_name: shop_system_postgres
-
     env_file:
       - .env
-
     ports:
       - "${POSTGRES_PORT:-5432}:5432"
-
     volumes:
       - postgres_data:/var/lib/postgresql/data
-
     networks:
       - shop_net
 
   api:
     container_name: shop_system_api_dev
-
     build:
       context: .
       dockerfile: apps/api/Dev.dockerfile
-
     ports:
       - "${PORT:-3000}:3000"
-
     volumes:
       - ./apps/api:/app/apps/api
+      - ./packages:/app/packages
+      - ./tsconfig.base.json:/app/tsconfig.base.json
+      - ./package.json:/app/package.json
+      - /app/node_modules
+      - /app/apps/api/node_modules
+      - /app/packages/dto/node_modules
+    depends_on:
+      - postgres_db
+    env_file:
+      - .env
+      - ./apps/api/.env
+    networks:
+      - shop_net
+
+  web:
+    container_name: shop_system_web_dev
+    build:
+      context: .
+      dockerfile: apps/web/Dev.dockerfile
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./apps/web:/app/apps/web
+
       - ./packages:/app/packages
 
       - ./tsconfig.base.json:/app/tsconfig.base.json
       - ./package.json:/app/package.json
+      - ./pnpm-lock.yaml:/app/pnpm-lock.yaml
+      - ./pnpm-workspace.yaml:/app/pnpm-workspace.yaml
 
       - /app/node_modules
-      - /app/apps/api/node_modules
+      - /app/apps/web/node_modules
       - /app/packages/dto/node_modules
 
     depends_on:
-      - postgres_db
+      - api
 
     env_file:
       - .env
-      - ./apps/api/.env
+      - ./apps/web/.env
 
     networks:
       - shop_net
