@@ -21,6 +21,7 @@ import {
     CardTitle,
 } from '@/components/ui/card'
 import { IUserLoginDto } from "dto/web";
+import { useAuthStore } from "@/store/useAuthStore";
 
 type LoginFormValues = IUserLoginDto
 
@@ -39,27 +40,24 @@ async function loginUser(data: LoginFormValues): Promise<any> {
 
 
 export function LoginForm() {
-    const navigate = useNavigate()
-
-    const form = useForm<LoginFormValues>({
-        defaultValues: {
-            email: '',
-            password: '',
-        },
-    })
+    const navigate = useNavigate();
+    const form = useForm<IUserLoginDto>(/* ... */);
+    const login = useAuthStore((state: { login: any }) => state.login);
 
     const mutation = useMutation({
         mutationFn: loginUser,
         onSuccess: (data) => {
-            toast.success('Вход выполнен успешно!')
-            // TODO: Сохранить токен (data.accessToken) в localStorage/cookie
-            console.log('Login success:', data)
-            // navigate('/')
+            toast.success('Вход выполнен успешно!');
+
+            login(data);
+
+            // TODO: /profile
+            // navigate('/');
         },
         onError: (error) => {
-            toast.error(error.message || 'Произошла ошибка')
+            toast.error(error.message || 'Произошла ошибка');
         },
-    })
+    });
 
     function onSubmit(values: LoginFormValues) {
         mutation.mutate(values)

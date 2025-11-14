@@ -1,9 +1,12 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@/store/useAuthStore';
-import { LoginForm } from '@/components/auth/LoginForm';
 
-export default function LoginPage() {
+type ProtectedRouteProps = {
+    children: React.ReactNode;
+};
+
+export function ProtectedRoute({ children }: ProtectedRouteProps) {
     const user = useAuthStore((state) => state.user);
     const isRehydrated = useAuthStore((state) => state.isRehydrated);
 
@@ -13,18 +16,14 @@ export default function LoginPage() {
         if (!isRehydrated) {
             return;
         }
-        if (user) {
-            navigate('/', { replace: true });
+        if (!user) {
+            navigate('/login', { replace: true });
         }
     }, [isRehydrated, user, navigate]);
 
-    if (!isRehydrated || user) {
+    if (!isRehydrated || !user) {
         return null;
     }
 
-    return (
-        <div className="flex min-h-screen items-center justify-center">
-            <LoginForm />
-        </div>
-    );
+    return <>{children}</>;
 }

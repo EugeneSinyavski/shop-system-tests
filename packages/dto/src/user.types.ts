@@ -14,3 +14,15 @@ export interface ICreateUserDto {
     password: string;
     role: 'USER' | 'ADMIN'; // TODO: Import from enums.ts
 }
+
+export interface IUser {
+    id: number;
+    email: string;
+    username: string;
+    firstname: string;
+    lastname: string;
+    phoneNumber: string;
+    role: 'USER' | 'ADMIN'; // TODO: Import from enums.ts
+    createdAt: string;
+    updatedAt: string;
+}

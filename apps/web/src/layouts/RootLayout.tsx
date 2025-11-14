@@ -1,11 +1,39 @@
-import { Outlet } from 'react-router-dom'
+import { Outlet, useNavigate } from 'react-router-dom';
+import { useAuthStore } from '@/store/useAuthStore';
+import { Button } from '@/components/ui/button';
 
 export default function RootLayout() {
+    const user = useAuthStore((state) => state.user);
+    const logout = useAuthStore((state) => state.logout);
+    const isRehydrated = useAuthStore((state) => state.isRehydrated);
+
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        logout();
+        navigate('/login');
+    };
+
+    const isAuthenticated = !!user;
+
     return (
-        // Глобальный контейнер
         <main className="min-h-screen">
-            {/* (Здесь можно добавить Header или Navbar) */}
-            <Outlet /> {/* Здесь будут рендериться наши страницы (Login, Home и т.д.) */}
+            <header className="border-b">
+                <div className="container mx-auto flex h-16 items-center justify-between p-4">
+                    <span className="font-bold">Shop System</span>
+
+                    {isRehydrated && isAuthenticated && (
+                        <div className="flex items-center gap-4">
+                            <span>Привет, {user?.username}</span>
+                            <Button variant="outline" onClick={handleLogout}>
+                                Выйти
+                            </Button>
+                        </div>
+                    )}
+                </div>
+            </header>
+
+            {isRehydrated ? <Outlet /> : null}
         </main>
-    )
+    );
 }
