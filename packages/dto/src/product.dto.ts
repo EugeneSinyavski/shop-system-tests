@@ -1,9 +1,10 @@
 import { IsString, IsNotEmpty, IsNumber, IsEnum, IsUrl, IsOptional, Min } from 'class-validator';
 import { Category } from './enums';
 import { ApiProperty } from '@nestjs/swagger';
+import { ICreateProductDto, IUpdateProductDto } from "./product.types";
 
 
-export class CreateProductDto {
+export class CreateProductDto implements ICreateProductDto {
   @ApiProperty({ example: 'Mechanical Keyboard', description: 'Product name' })
   @IsString()
   @IsNotEmpty()
@@ -28,7 +29,7 @@ export class CreateProductDto {
   urlImage!: string;
 }
 
-export class UpdateProductDto {
+export class UpdateProductDto implements IUpdateProductDto {
   @ApiProperty({ example: 'New Keyboard Name', description: 'Product name', required: false })
   @IsOptional()
   @IsString()
