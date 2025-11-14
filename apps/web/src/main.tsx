@@ -12,29 +12,39 @@ import RegisterPage from './pages/Register';
 import HomePage from './pages/Home';
 import { ProtectedRoute } from './components/auth/ProtectedRoute';
 import CartPage from "@/pages/Cart";
+import OrdersPage from "@/pages/Orders";
+import ProductDetailPage from "@/pages/ProductDetail";
 
 const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
     {
         path: '/',
-        element: <RootLayout />,
+        element: <RootLayout/>,
         children: [
             {
                 path: '/',
                 element: (
                     <ProtectedRoute>
-                        <HomePage />
+                        <HomePage/>
                     </ProtectedRoute>
                 ),
             },
             {
                 path: '/cart',
-                element: (<ProtectedRoute><CartPage /></ProtectedRoute>),
+                element: (<ProtectedRoute><CartPage/></ProtectedRoute>),
+            },
+            {
+                path: '/product/:productId',
+                element: (<ProtectedRoute><ProductDetailPage/></ProtectedRoute>),
+            },
+            {
+                path: '/orders',
+                element: (<ProtectedRoute><OrdersPage/></ProtectedRoute>),
             },
 
-            { path: '/login', element: <LoginPage /> },
-            { path: '/register', element: <RegisterPage /> },
+            { path: '/login', element: <LoginPage/> },
+            { path: '/register', element: <RegisterPage/> },
         ],
     },
 ]);
@@ -42,8 +52,8 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
         <QueryClientProvider client={queryClient}>
-            <RouterProvider router={router} />
-            <Toaster richColors />
+            <RouterProvider router={router}/>
+            <Toaster richColors/>
         </QueryClientProvider>
     </React.StrictMode>,
 );

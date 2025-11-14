@@ -21,11 +21,15 @@ export default function RootLayout() {
         <main className="min-h-screen">
             <header className="border-b">
                 <div className="container mx-auto flex h-16 items-center justify-between p-4">
-                    <span className="font-bold">Shop System</span>
+                    <Link to="/" className="font-bold">Shop System</Link>
 
                     {isRehydrated && isAuthenticated && (
                         <div className="flex items-center gap-4">
                             <span>Привет, {user?.username}</span>
+
+                            <Button asChild variant="link" className="text-foreground">
+                                <Link to="/orders">Мои Заказы</Link>
+                            </Button>
 
                             <Button asChild variant="ghost" size="icon">
                                 <Link to="/cart">
