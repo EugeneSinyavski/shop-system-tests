@@ -4,4 +4,4 @@ export * from './user.types';
 // export * from './warehouse.types';
 export * from './product.types';
 // export * from './order.types';
-// export * from './bucket.types';
+export * from './bucket.types';

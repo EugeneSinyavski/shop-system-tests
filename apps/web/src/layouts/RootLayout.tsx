@@ -1,6 +1,7 @@
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@/store/useAuthStore';
 import { Button } from '@/components/ui/button';
+import { ShoppingCart } from "lucide-react";
 
 export default function RootLayout() {
     const user = useAuthStore((state) => state.user);
@@ -25,6 +26,14 @@ export default function RootLayout() {
                     {isRehydrated && isAuthenticated && (
                         <div className="flex items-center gap-4">
                             <span>Привет, {user?.username}</span>
+
+                            <Button asChild variant="ghost" size="icon">
+                                <Link to="/cart">
+                                    <ShoppingCart className="h-5 w-5"/>
+                                    <span className="sr-only">Корзина</span>
+                                </Link>
+                            </Button>
+
                             <Button variant="outline" onClick={handleLogout}>
                                 Выйти
                             </Button>
@@ -33,7 +42,7 @@ export default function RootLayout() {
                 </div>
             </header>
 
-            {isRehydrated ? <Outlet /> : null}
+            {isRehydrated ? <Outlet/> : null}
         </main>
     );
 }

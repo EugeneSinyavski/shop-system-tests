@@ -8,16 +8,17 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
+import { useAddToCart } from '@/hooks/useAddToCart';
 
 interface ProductCardProps {
     product: IProduct;
 }
 
 export function ProductCard({ product }: ProductCardProps) {
-    // TODO: useMutation  'onClick'
+    const { mutate: addToCart, isPending } = useAddToCart();
+
     const handleAddToCart = () => {
-        console.log('Добавить в корзину:', product.id);
-        //POST /api/bucket/{userId}/addProduct
+        addToCart(product.id);
     };
 
     return (
@@ -37,8 +38,12 @@ export function ProductCard({ product }: ProductCardProps) {
                 <p className="text-2xl font-bold">{product.price} руб.</p>
             </CardContent>
             <CardFooter>
-                <Button className="w-full" onClick={handleAddToCart}>
-                    Добавить в корзину
+                <Button
+                    className="w-full"
+                    onClick={handleAddToCart}
+                    disabled={isPending}
+                >
+                    {isPending ? 'Добавление...' : 'Добавить в корзину'}
                 </Button>
             </CardFooter>
         </Card>

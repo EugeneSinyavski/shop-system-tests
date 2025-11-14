@@ -4,14 +4,24 @@
     "outDir": "./dist",
     "baseUrl": "./",
     "paths": {
-      "dto": ["../../packages/dto/src"],
-      "dto/*": ["../../packages/dto/src/*"]
+      "dto": [
+        "../../packages/dto/src"
+      ],
+      "dto/*": [
+        "../../packages/dto/src/*"
+      ]
     },
-
     "noImplicitAny": false,
     "strictBindCallApply": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "test"]
+  "include": [
+    "src/**/*",
+    "prisma/seed.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "test"
+  ]
 }

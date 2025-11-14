@@ -11,6 +11,7 @@ import LoginPage from './pages/Login';
 import RegisterPage from './pages/Register';
 import HomePage from './pages/Home';
 import { ProtectedRoute } from './components/auth/ProtectedRoute';
+import CartPage from "@/pages/Cart";
 
 const queryClient = new QueryClient();
 
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
                         <HomePage />
                     </ProtectedRoute>
                 ),
+            },
+            {
+                path: '/cart',
+                element: (<ProtectedRoute><CartPage /></ProtectedRoute>),
             },
 
             { path: '/login', element: <LoginPage /> },
