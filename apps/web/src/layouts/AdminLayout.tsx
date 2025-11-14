@@ -1,4 +1,3 @@
-// apps/web/src/layouts/AdminLayout.tsx
 import { Outlet, Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 
@@ -17,13 +16,16 @@ export default function AdminLayout() {
                         <Button asChild variant="ghost" className="justify-start">
                             <Link to="/admin/products">Товары</Link>
                         </Button>
-                        {/* (TODO: Добавить /admin/orders, /admin/warehouses) */}
+                        <Button asChild variant="ghost" className="justify-start">
+                            <Link to="/admin/warehouses">Склады</Link>
+                        </Button>
+                        {/* (TODO: Добавить /admin/orders) */}
                     </nav>
                 </aside>
 
                 {/* --- Контент --- */}
                 <main className="md:col-span-3">
-                    <Outlet /> {/* Здесь рендерятся страницы админки */}
+                    <Outlet />
                 </main>
             </div>
         </div>

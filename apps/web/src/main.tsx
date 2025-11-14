@@ -19,6 +19,7 @@ import { AdminRoute } from "@/components/auth/AdminRoute";
 import AdminLayout from "@/layouts/AdminLayout";
 import AdminDashboardPage from "@/pages/admin/Dashboard";
 import AdminProductsPage from "@/pages/admin/Products";
+import AdminWarehousesPage from "@/pages/admin/Warehouses";
 
 const queryClient = new QueryClient();
 
@@ -71,6 +72,10 @@ const router = createBrowserRouter([
             {
                 path: 'products',
                 element: <AdminProductsPage/>,
+            },
+            {
+                path: 'warehouses', // /admin/warehouses
+                element: <AdminWarehousesPage/>,
             },
         ],
     },
