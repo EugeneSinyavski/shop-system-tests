@@ -13,6 +13,24 @@ export class OrderService {
     private prisma: PrismaService,
     private authService: AuthService) {}
 
+  async findAllOrders() {
+    return this.prisma.ordering.findMany({
+      include: {
+        user: {
+          select: { id: true, email: true, username: true }
+        },
+        items: {
+          include: {
+            product: true,
+          },
+        },
+      },
+      orderBy: {
+        orderDate: 'desc'
+      }
+    });
+  }
+
   async createOrder(userId: number, dto: CreateOrderDto) {
 
     await this.authService['_validateUserExistsById'](userId);

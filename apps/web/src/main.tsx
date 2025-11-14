@@ -3,9 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from 'sonner';
-
 import './index.css';
-
 import RootLayout from './layouts/RootLayout';
 import LoginPage from './pages/Login';
 import RegisterPage from './pages/Register';
@@ -20,6 +18,7 @@ import AdminLayout from "@/layouts/AdminLayout";
 import AdminDashboardPage from "@/pages/admin/Dashboard";
 import AdminProductsPage from "@/pages/admin/Products";
 import AdminWarehousesPage from "@/pages/admin/Warehouses";
+import AdminOrdersPage from "@/pages/admin/Orders";
 
 const queryClient = new QueryClient();
 
@@ -76,6 +75,10 @@ const router = createBrowserRouter([
             {
                 path: 'warehouses', // /admin/warehouses
                 element: <AdminWarehousesPage/>,
+            },
+            {
+                path: 'orders', // /admin/orders
+                element: <AdminOrdersPage/>,
             },
         ],
     },
