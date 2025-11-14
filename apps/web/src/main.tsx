@@ -15,6 +15,9 @@ import CartPage from "@/pages/Cart";
 import OrdersPage from "@/pages/Orders";
 import ProductDetailPage from "@/pages/ProductDetail";
 import ProfilePage from "@/pages/Profile";
+import { AdminRoute } from "@/components/auth/AdminRoute";
+import AdminLayout from "@/layouts/AdminLayout";
+import AdminDashboardPage from "@/pages/admin/Dashboard";
 
 const queryClient = new QueryClient();
 
@@ -50,6 +53,21 @@ const router = createBrowserRouter([
 
             { path: '/login', element: <LoginPage/> },
             { path: '/register', element: <RegisterPage/> },
+        ],
+    },
+    {
+        path: '/admin',
+        element: (
+            <AdminRoute>
+                <AdminLayout />
+            </AdminRoute>
+        ),
+        children: [
+            {
+                path: '', // /admin
+                element: <AdminDashboardPage />,
+            },
+            // (Здесь будут /admin/products, /admin/orders и т.д.)
         ],
     },
 ]);
