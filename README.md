@@ -1,5 +1,11 @@
 Shop System
 
+Steps: 
+1. pnpm i
+2. docker-compose up --build -d
+3. docker-compose exec api pnpm seed
+4. http://localhost:5173/
+
 🗄️ Project Structure
 
 **/apps/api**: The main NestJS application (backend). <br/>
