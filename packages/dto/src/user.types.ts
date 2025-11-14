@@ -26,3 +26,11 @@ export interface IUser {
     createdAt: string;
     updatedAt: string;
 }
+
+export interface IUpdateUserDto {
+    firstname?: string;
+    lastname?: string;
+    phoneNumber?: string;
+    email?: string;
+    username?: string;
+}

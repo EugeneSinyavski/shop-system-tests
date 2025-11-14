@@ -14,6 +14,7 @@ import { ProtectedRoute } from './components/auth/ProtectedRoute';
 import CartPage from "@/pages/Cart";
 import OrdersPage from "@/pages/Orders";
 import ProductDetailPage from "@/pages/ProductDetail";
+import ProfilePage from "@/pages/Profile";
 
 const queryClient = new QueryClient();
 
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
                         <HomePage/>
                     </ProtectedRoute>
                 ),
+            },
+            {
+                path: '/profile',
+                element: (<ProtectedRoute><ProfilePage/></ProtectedRoute>),
             },
             {
                 path: '/cart',

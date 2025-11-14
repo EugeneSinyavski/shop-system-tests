@@ -25,7 +25,9 @@ export default function RootLayout() {
 
                     {isRehydrated && isAuthenticated && (
                         <div className="flex items-center gap-4">
-                            <span>Привет, {user?.username}</span>
+                            <Button asChild variant="link" className="text-foreground">
+                                <Link to="/profile">Привет, {user?.username}</Link>
+                            </Button>
 
                             <Button asChild variant="link" className="text-foreground">
                                 <Link to="/orders">Мои Заказы</Link>
