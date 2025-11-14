@@ -2,16 +2,16 @@ import { useBucket } from '@/hooks/useBucket';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import type { IBucketItem } from 'dto/web';
+import { useRemoveFromCart } from "@/hooks/useRemoveFromCart";
 
 // TODO: Вынести 'useRemoveFromCart' в отдельный хук
 // TODO: Вынести 'CartItem' в отдельный компонент
 
 function CartItem({ item }: { item: IBucketItem }) {
+    const { mutate: removeFromCart, isPending } = useRemoveFromCart();
 
     const handleRemove = () => {
-        // TODO: Подключить useMutation для 'onClick'
-        // DELETE /api/bucket/{userId}/removeProduct
-        console.log('Удалить:', item.product_id);
+        removeFromCart(item.product_id);
     };
 
     return (
@@ -29,7 +29,7 @@ function CartItem({ item }: { item: IBucketItem }) {
                     </p>
                 </div>
             </div>
-            <Button variant="destructive" size="sm" onClick={handleRemove}>
+            <Button variant="destructive" size="sm" onClick={handleRemove} disabled={isPending}>
                 Удалить
             </Button>
         </div>
@@ -50,7 +50,6 @@ export default function CartPage() {
     const items = bucket?.products || [];
 
     const totalCost = items.reduce((acc, item) => {
-        // Убедимся, что price - это число
         return acc + Number(item.product.price);
     }, 0);
 
@@ -65,7 +64,7 @@ export default function CartPage() {
                         <CardContent className="p-0">
                             {items.length > 0 ? (
                                 items.map((item) => (
-                                    <CartItem key={item.product_id} item={item} />
+                                    <CartItem key={item.product_id} item={item}/>
                                 ))
                             ) : (
                                 <p className="p-6 text-center text-muted-foreground">
