@@ -3,9 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import type { IBucketItem } from 'dto/web';
 import { useRemoveFromCart } from "@/hooks/useRemoveFromCart";
-
-// TODO: Вынести 'useRemoveFromCart' в отдельный хук
-// TODO: Вынести 'CartItem' в отдельный компонент
+import { useCreateOrder } from "@/hooks/useCreateOrder";
 
 function CartItem({ item }: { item: IBucketItem }) {
     const { mutate: removeFromCart, isPending } = useRemoveFromCart();
@@ -30,7 +28,7 @@ function CartItem({ item }: { item: IBucketItem }) {
                 </div>
             </div>
             <Button variant="destructive" size="sm" onClick={handleRemove} disabled={isPending}>
-                Удалить
+                {isPending ? 'Удаление...' : 'Удалить'}
             </Button>
         </div>
     );
@@ -38,6 +36,7 @@ function CartItem({ item }: { item: IBucketItem }) {
 
 export default function CartPage() {
     const { data: bucket, isLoading, isError, error } = useBucket();
+    const { mutate: createOrder, isPending: isCreatingOrder } = useCreateOrder();
 
     if (isLoading) {
         return <div className="container p-4">Загрузка корзины...</div>;
@@ -48,10 +47,15 @@ export default function CartPage() {
     }
 
     const items = bucket?.products || [];
-
     const totalCost = items.reduce((acc, item) => {
         return acc + Number(item.product.price);
     }, 0);
+
+    const handleCreateOrder = () => {
+        if (items.length > 0) {
+            createOrder(items);
+        }
+    };
 
     return (
         <div className="container mx-auto max-w-4xl p-4">
@@ -84,9 +88,12 @@ export default function CartPage() {
                                 <span>Итого:</span>
                                 <span>{totalCost.toFixed(2)} руб.</span>
                             </div>
-                            <Button className="mt-6 w-full" disabled={items.length === 0}>
-                                {/* POST /order/{userId} */}
-                                Оформить заказ
+                            <Button
+                                className="mt-6 w-full"
+                                disabled={items.length === 0 || isCreatingOrder}
+                                onClick={handleCreateOrder}
+                            >
+                                {isCreatingOrder ? 'Оформление...' : 'Оформить заказ'}
                             </Button>
                         </CardContent>
                     </Card>

@@ -2,8 +2,9 @@ import { IsArray, IsEnum, IsInt, IsNotEmpty, Min, ValidateNested } from 'class-v
 import { Type } from 'class-transformer';
 import { OrderStatus } from './enums';
 import { ApiProperty } from '@nestjs/swagger';
+import { ICreateOrderDto, ICreateOrderItemDto, IUpdateOrderDto } from "./order.types";
 
-class CreateOrderItemDto {
+class CreateOrderItemDto implements ICreateOrderItemDto {
   @ApiProperty({ example: 1, description: 'Product ID' })
   @IsInt()
   @IsNotEmpty()
@@ -15,7 +16,7 @@ class CreateOrderItemDto {
   quantity!: number;
 }
 
-export class CreateOrderDto {
+export class CreateOrderDto implements ICreateOrderDto {
   @ApiProperty({ type: [CreateOrderItemDto], description: 'List of order items' })
   @IsArray()
   @ValidateNested({ each: true })
@@ -23,7 +24,7 @@ export class CreateOrderDto {
   items!: CreateOrderItemDto[];
 }
 
-export class UpdateOrderDto {
+export class UpdateOrderDto implements IUpdateOrderDto {
   @ApiProperty({ example: OrderStatus.SHIPPED, description: 'The new status of the order' })
   @IsEnum(OrderStatus)
   status!: OrderStatus;
