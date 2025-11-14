@@ -2,9 +2,10 @@ Shop System
 
 Steps: 
 1. pnpm i
-2. docker-compose up --build -d
-3. docker-compose exec api pnpm seed
-4. http://localhost:5173/
+2. pnpm gen:envs
+3. docker-compose up --build -d
+4. docker-compose exec api pnpm --filter api seed
+5. http://localhost:5173/
 
 🗄️ Project Structure
 
