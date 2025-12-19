@@ -1,4 +1,4 @@
-import { PrismaClient, Prisma, Category } from '@prisma/client';
+import { PrismaClient, Prisma } from '@prisma/client';
 import { faker } from '@faker-js/faker';
 import * as bcrypt from 'bcrypt';
 import * as fs from 'fs';
