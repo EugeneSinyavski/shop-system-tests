@@ -1,5 +1,4 @@
 import { execSync, exec } from 'child_process';
-import { promisify } from 'util';
 
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
