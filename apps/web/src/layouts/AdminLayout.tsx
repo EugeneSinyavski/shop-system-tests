@@ -1,6 +1,14 @@
-import { Outlet, Link, useNavigate } from 'react-router-dom';
+import { NavLink, Link, Outlet, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useAuthStore } from '@/store/useAuthStore';
+import {
+    LayoutDashboard,
+    Package,
+    Warehouse,
+    ClipboardList,
+    LogOut,
+    ChevronRight
+} from 'lucide-react';
 
 export default function AdminLayout() {
     const logout = useAuthStore((state) => state.logout);
@@ -11,35 +19,86 @@ export default function AdminLayout() {
         navigate('/login');
     };
 
+    const navItems = [
+        { to: "/admin", label: "Обзор", icon: LayoutDashboard, end: true },
+        { to: "/admin/products", label: "Товары", icon: Package, end: false },
+        { to: "/admin/warehouses", label: "Склады", icon: Warehouse, end: false },
+        { to: "/admin/orders", label: "Заказы", icon: ClipboardList, end: false },
+    ];
+
     return (
-        <div className="container mx-auto p-4">
-            <div className="flex justify-between items-center mb-6">
-                <h1 className="text-3xl font-bold">Панель Администратора</h1>
-                <Button variant="outline" onClick={handleLogout}>
-                    Выйти
-                </Button>
-            </div>
+        <div className="flex min-h-screen bg-muted/30">
+            {/* Сайдбар */}
+            <aside className="fixed inset-y-0 left-0 z-10 hidden w-64 border-r bg-background md:block">
+                <div className="flex h-full flex-col gap-2">
+                    {/* Кликабельный заголовок-бренд */}
+                    <div className="flex h-16 items-center border-b px-6">
+                        <Link
+                            to="/"
+                            className="text-lg font-bold tracking-tight text-primary hover:opacity-80 transition-opacity"
+                        >
+                            Админ-панель
+                        </Link>
+                    </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                <aside className="md:col-span-1">
-                    <nav className="flex flex-col gap-2">
-                        <Button asChild variant="ghost" className="justify-start">
-                            <Link to="/admin">Главная</Link>
-                        </Button>
-                        <Button asChild variant="ghost" className="justify-start">
-                            <Link to="/admin/products">Товары</Link>
-                        </Button>
-                        <Button asChild variant="ghost" className="justify-start">
-                            <Link to="/admin/warehouses">Склады</Link>
-                        </Button>
-                        <Button asChild variant="ghost" className="justify-start">
-                            <Link to="/admin/orders">Заказы</Link>
-                        </Button>
+                    <nav className="flex-1 px-4 py-4 space-y-1">
+                        {navItems.map((item) => (
+                            <NavLink
+                                key={item.to}
+                                to={item.to}
+                                end={item.end}
+                                className={({ isActive }) =>
+                                    `flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all ${
+                                        isActive
+                                            ? "bg-primary text-primary-foreground shadow-sm"
+                                            : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                                    }`
+                                }
+                            >
+                                {({ isActive }) => (
+                                    <>
+                                        <item.icon className="h-4 w-4" />
+                                        <span className="flex-1">{item.label}</span>
+                                        {isActive ? <ChevronRight className="ml-auto h-4 w-4" /> : null}
+                                    </>
+                                )}
+                            </NavLink>
+                        ))}
                     </nav>
-                </aside>
 
-                <main className="md:col-span-3">
-                    <Outlet />
+                    <div className="mt-auto border-t p-4">
+                        <Button
+                            variant="ghost"
+                            className="w-full justify-start gap-3 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+                            onClick={handleLogout}
+                        >
+                            <LogOut className="h-4 w-4" />
+                            Выйти
+                        </Button>
+                    </div>
+                </div>
+            </aside>
+
+            {/* Контентная часть */}
+            <div className="flex flex-1 flex-col md:pl-64">
+                <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b bg-background/95 px-6 backdrop-blur">
+                    <Link to="/" className="text-sm font-bold text-primary md:hidden">
+                        Admin panel
+                    </Link>
+
+                    <div className="hidden md:block">
+                        <p className="text-sm text-muted-foreground font-medium">Система управления магазином v1.0</p>
+                    </div>
+
+                    <div className="flex items-center gap-4">
+                        {/* Место для переключателя темы */}
+                    </div>
+                </header>
+
+                <main className="flex-1 p-6 lg:p-10">
+                    <div className="mx-auto max-w-6xl">
+                        <Outlet />
+                    </div>
                 </main>
             </div>
         </div>

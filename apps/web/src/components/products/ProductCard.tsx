@@ -18,37 +18,42 @@ interface ProductCardProps {
 export function ProductCard({ product }: ProductCardProps) {
     const { mutate: addToCart, isPending } = useAddToCart();
 
-    const handleAddToCart = (e: React.MouseEvent) => {
-        e.preventDefault();
-        e.stopPropagation();
-        addToCart(product.id);
-    };
-
     return (
-        // 3. ОБОРАЧИВАЕМ КАРТОЧКУ В ССЫЛКУ
-        <Link to={`/product/${product.id}`} className="flex">
-            <Card className="flex flex-col w-full hover:border-primary">
-                <CardHeader>
-                    <div className="relative h-48 w-full overflow-hidden rounded-md">
+        <Link to={`/product/${product.id}`} className="group flex">
+            <Card className="flex flex-col w-full transition-all duration-300 hover:shadow-lg group-hover:border-primary/50 overflow-hidden">
+                <CardHeader className="p-0">
+                    <div className="relative h-56 w-full overflow-hidden">
                         <img
                             src={product.urlImage}
                             alt={product.name}
-                            className="h-full w-full object-cover"
+                            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                         />
                     </div>
-                    <CardTitle className="pt-4">{product.name}</CardTitle>
-                    <CardDescription>{product.description.substring(0, 100)}...</CardDescription>
                 </CardHeader>
-                <CardContent className="flex-grow">
-                    <p className="text-2xl font-bold">{product.price} руб.</p>
+                <CardContent className="flex-grow p-4">
+                    <CardTitle className="line-clamp-1 group-hover:text-primary transition-colors">
+                        {product.name}
+                    </CardTitle>
+                    <CardDescription className="line-clamp-2 mt-2 min-h-[40px]">
+                        {product.description}
+                    </CardDescription>
+                    <div className="mt-4">
+                        <span className="text-2xl font-bold text-primary">
+                            {Intl.NumberFormat('ru-RU').format(product.price)} ₽
+                        </span>
+                    </div>
                 </CardContent>
-                <CardFooter>
+                <CardFooter className="p-4 pt-0">
                     <Button
-                        className="w-full"
-                        onClick={handleAddToCart}
+                        className="w-full font-semibold"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            addToCart(product.id);
+                        }}
                         disabled={isPending}
+                        variant={isPending ? "secondary" : "default"}
                     >
-                        {isPending ? 'Добавление...' : 'Добавить в корзину'}
+                        {isPending ? 'Добавляем...' : 'В корзину'}
                     </Button>
                 </CardFooter>
             </Card>
