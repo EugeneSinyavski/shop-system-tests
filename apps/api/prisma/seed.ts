@@ -35,7 +35,6 @@ async function seedUsers() {
 async function seedProducts() {
     console.log('📦 Seeding static products with real images...');
 
-    // Очистка
     await prisma.productInOrder.deleteMany();
     await prisma.productsInBuckets.deleteMany();
     await prisma.productLocation.deleteMany();
