@@ -33,24 +33,29 @@ async function seedUsers() {
 }
 
 async function seedProducts() {
-    console.log('📦 Seeding static products...');
+    console.log('📦 Seeding static products with real images...');
+
+    // Очистка
     await prisma.productInOrder.deleteMany();
     await prisma.productsInBuckets.deleteMany();
     await prisma.productLocation.deleteMany();
     await prisma.product.deleteMany();
 
     for (const p of staticProducts) {
-        let imageUrl = '';
-        if (p.category === Category.ELECTRONICS) imageUrl = faker.image.urlLoremFlickr({ category: 'technics' });
-        else if (p.category === Category.BOOKS) imageUrl = faker.image.urlLoremFlickr({ category: 'books' });
-        else imageUrl = faker.image.urlLoremFlickr({ category: 'fashion' });
+        const finalImageUrl = p.urlImage || faker.image.urlLoremFlickr({ category: 'products' });
 
         const product = await prisma.product.create({
-            data: { ...p, price: new Prisma.Decimal(p.price), urlImage: imageUrl },
+            data: {
+                name: p.name,
+                description: p.description,
+                price: new Prisma.Decimal(p.price),
+                category: p.category,
+                urlImage: finalImageUrl,
+            },
         });
         seededData.products.push(product);
     }
-    console.log(`📦 Seeded ${staticProducts.length} products.`);
+    console.log(`📦 Seeded ${staticProducts.length} items.`);
 }
 
 async function saveSeededData() {
