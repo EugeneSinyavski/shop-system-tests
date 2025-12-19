@@ -1,7 +1,7 @@
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@/store/useAuthStore';
 import { Button } from '@/components/ui/button';
-import { ShoppingCart } from "lucide-react";
+import { ShoppingCart, LayoutDashboard } from "lucide-react";
 
 export default function RootLayout() {
     const user = useAuthStore((state) => state.user);
@@ -17,6 +17,8 @@ export default function RootLayout() {
 
     const isAuthenticated = !!user;
 
+    const isAdmin = user?.role === 'ADMIN';
+
     return (
         <main className="min-h-screen">
             <header className="border-b">
@@ -25,6 +27,15 @@ export default function RootLayout() {
 
                     {isRehydrated && isAuthenticated && (
                         <div className="flex items-center gap-4">
+                            {isAdmin && (
+                                <Button asChild variant="secondary" className="gap-2">
+                                    <Link to="/admin">
+                                        <LayoutDashboard className="h-4 w-4" />
+                                        Админ-панель
+                                    </Link>
+                                </Button>
+                            )}
+
                             <Button asChild variant="link" className="text-foreground">
                                 <Link to="/profile">Привет, {user?.username}</Link>
                             </Button>

@@ -58,17 +58,34 @@ async function seedProducts() {
 }
 
 async function saveSeededData() {
-    const targetDir = path.join('/app', 'access-data');
-    if (!fs.existsSync(targetDir)) fs.mkdirSync(targetDir, { recursive: true });
+    const accessFolderName = 'access-data';
+    const rootPath = '/app';
+    const targetDir = path.join(rootPath, accessFolderName);
 
-    fs.writeFileSync(path.join(targetDir, 'seeded-data.json'), JSON.stringify(seededData, null, 2));
+    if (!fs.existsSync(targetDir)) {
+        fs.mkdirSync(targetDir, { recursive: true });
+    }
 
-    let md = `# 🔐 Dev Access Credentials\n\nGenerated: ${new Date().toLocaleString()}\n\n## 👥 Accounts\n| Role | Email | Password |\n| :--- | :--- | :--- |\n`;
-    seededData.users.forEach(u => md += `| **${u.role}** | \`${u.email}\` | \`${u.password}\` |\n`);
-    md += `\n\n--- \n### 📦 Raw Data\nFull product list: [seeded-data.json](./seeded-data.json)`;
+    const jsonPath = path.join(targetDir, 'seeded-data.json');
+    const mdPath = path.join(targetDir, 'credentials.md');
 
-    fs.writeFileSync(path.join(targetDir, 'credentials.md'), md);
-    console.log(`✅ Access info saved to /app/access-data`);
+    fs.writeFileSync(jsonPath, JSON.stringify(seededData, null, 2));
+
+    let mdContent = `# 🔐 Dev Access Credentials\n\n`;
+    mdContent += `Generated: ${new Date().toLocaleString()}\n\n`;
+
+    mdContent += `## 👥 Accounts\n`;
+    mdContent += `| Role | Email | Password | URL |\n`;
+    mdContent += `| :--- | :--- | :--- | :--- |\n`;
+
+    seededData.users.forEach(u => {
+        mdContent += `| **${u.role}** | \`${u.email}\` | \`${u.password}\` | [Login](http://localhost:5173/login) |\n`;
+    });
+
+    mdContent += `\n\n--- \n### 📦 Raw Data\nFull product list: [seeded-data.json](./seeded-data.json)`;
+
+    fs.writeFileSync(mdPath, mdContent);
+    console.log(`✅ Access info saved to /app/${accessFolderName}`);
 }
 
 async function main() {
