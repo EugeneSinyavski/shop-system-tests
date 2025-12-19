@@ -1,56 +1,67 @@
-Shop System
+# Shop System (AQA Edition) 🚀
 
-Steps: 
-1. pnpm i
-2. pnpm gen:envs
-3. docker-compose up --build -d
-4. docker-compose exec api pnpm --filter api seed
-5. http://localhost:5173/
+Проект интернет-магазина, оптимизированный для обучения и работы **AQA-инженеров**. Включает в себя автоматизированные скрипты развертывания и стабильный набор тестовых данных.
 
-🗄️ Project Structure
+## 📋 Требования (Prerequisites)
 
-**/apps/api**: The main NestJS application (backend). <br/>
-**/packages/dto**: Shared DTOs (Data Transfer Objects) for the API. <br/>
-**/docker-compose.yml**: Manages the startup of the api and postgres_db. <br/>
-**/apps/api/Dev.dockerfile**: Dockerfile for development (with hot-reload).
+Перед запуском убедитесь, что у вас установлены:
+* **Node.js**: v20+
+* **pnpm**: v9+
+* **Docker Desktop**: должен быть запущен
+* **Git**
 
-🚀 Getting Started
-These steps describe how to run the complete development environment (API + Database) using Docker.
+---
 
-**1. Prerequisites**
+## ⚡ Быстрый старт
 
-Node.js (v20+) <br/>
-pnpm (v9+) <br/>
-Docker Desktop (must be running) <br/>
-Git
+### 1. Полная установка (Первый запуск / Сброс данных)
+Эта команда устанавливает зависимости, генерирует `.env` файлы, собирает Docker-контейнеры, очищает базу данных и наполняет её 50 статичными товарами.
+```bash
+pnpm full-setup
+```
+*В результате в корне проекта появится папка `access-data/` с данными для тестов.*
 
-**2. Installation**
+### 2. Обычный запуск (Для ежедневной работы)
+Если установка уже была произведена и вам нужно просто поднять сервис с сохранением текущего состояния базы данных:
+```bash
+pnpm start-app
+```
+*Команда запускает существующие контейнеры без пересборки и повторного сидирования.*
 
-**2.1** Clone the repository:
+---
 
-git clone <your-repository-url> <br/>
-cd shop-system
+## 🔑 Тестовые данные для AQA
 
-**2.2** Install dependencies: (This is necessary for pnpm to link the workspace and for your IDE to see the types).
+Скрипт сидирования автоматически подготавливает среду для автоматизации и сохраняет информацию в локальную папку `access-data/`:
 
-pnpm install
+* **`access-data/credentials.md`**: Список учетных записей (Admin и Regular Users) с паролями и прямыми ссылками на страницу входа.
+* **`access-data/seeded-data.json`**: Полный JSON-дамп всех **50 товаров** (названия, ID, категории, цены) для использования во фреймворках автоматизации.
 
-**3. Environment Setup**
+> **Важно:** Эти данные статичны (названия и категории не меняются), что гарантирует стабильность ваших автотестов.
 
-The project requires two .env files to run (as per requirements).
-You should replace the default variables with your own values.
+---
 
-**3.1** Root .env <br/>
-**3.2** API .env (for NestJS)
+## 🛠️ Доступные скрипты
 
-**4. Running the Application**
+| Команда | Описание | Когда использовать |
+| :--- | :--- | :--- |
+| **`pnpm full-setup`** | Установка `node_modules`, билд Docker, **полный сброс и сид БД**, экспорт папки `access-data`. | При первом развертывании или если нужно обновить список товаров. |
+| **`pnpm start-app`** | Запуск контейнеров в фоновом режиме. | Для обычной работы с приложением без потери данных. |
+| **`pnpm gen:envs`** | Автоматическая генерация `.env` файлов из примеров. | Выполняется автоматически внутри `full-setup`. |
 
-**4.1** Start Docker Compose: (This command will build the Dev.dockerfile and start both api and postgres_db) <br/>
---build is only needed the first time or if you change a Dockerfile <br/>
-docker-compose up --build -d
+---
 
-**4.2** The server is running!
+## 🌐 Ссылки проекта
 
-      The API will be available at http://localhost:3000
-      The Swagger UI (documentation) will be at: http://localhost:3000/api-docs
-      Hot-reload is enabled: Any changes in apps/api or packages/dto will automatically restart the server.
+* **Frontend**: `http://localhost:5173/`
+* **Backend API**: `http://localhost:3000`
+* **Swagger UI (Docs)**: `http://localhost:3000/api-docs`
+
+---
+
+## 🗄️ Проектная структура
+
+* **/apps/api**: Основное приложение NestJS (Backend).
+* **/apps/web**: Frontend приложение на Vite + React.
+* **/apps/api/prisma/data.ts**: Конфигурационный файл со списком всех тестовых товаров.
+* **/access-data**: Локальная папка с доступами и JSON-данными (генерируется автоматически).

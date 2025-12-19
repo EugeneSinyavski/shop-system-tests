@@ -5,6 +5,7 @@
     "dev": "pnpm --filter api start:dev",
     "prisma": "pnpm --filter api exec prisma",
     "gen:envs": "node scripts/generate-envs.cjs",
-    "full-setup": "node scripts/setup.mjs"
+    "full-setup": "node scripts/setup.mjs",
+    "start-app": "node scripts/start.mjs"
   }
 }
