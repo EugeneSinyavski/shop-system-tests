@@ -96,7 +96,7 @@ async function seedProducts() {
 }
 
 async function saveSeededData() {
-    const accessFolderName = 'dev-access';
+    const accessFolderName = 'access-data';
     const rootPath = '/app';
     const targetDir = path.join(rootPath, accessFolderName);
 

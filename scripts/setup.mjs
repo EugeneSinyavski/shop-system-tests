@@ -91,14 +91,14 @@ async function setup() {
         const containerName = execSync('docker ps --filter "name=api" --format "{{.Names}}"').toString().trim().split('\n')[0];
 
         if (containerName) {
-            if (fs.existsSync('./dev-access')) {
-                fs.rmSync('./dev-access', { recursive: true, force: true });
+            if (fs.existsSync('./access-data')) {
+                fs.rmSync('./access-data', { recursive: true, force: true });
             }
-            execSync(`docker cp ${containerName}:/app/dev-access ./dev-access`, { stdio: 'inherit' });
-            console.log(`${colors.green}✓ Folder /dev-access is ready in project root!${colors.reset}\n`);
+            execSync(`docker cp ${containerName}:/app/access-data ./access-data`, { stdio: 'inherit' });
+            console.log(`${colors.green}✓ Folder /access-data is ready in project root!${colors.reset}\n`);
         }
     } catch (err) {
-        console.log(`${colors.yellow}Manual check: files should be in /app/dev-access inside the container.${colors.reset}`);
+        console.log(`${colors.yellow}Manual check: files should be in /app/access-data inside the container.${colors.reset}`);
     }
 
     console.log(`${colors.bright}${colors.green}✨ Setup complete! Welcome, intern!${colors.reset}`);
