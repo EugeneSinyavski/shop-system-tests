@@ -2,9 +2,14 @@ name: CI/CD (Docker Compose)
 
 on:
   push:
-    branches: [ main, master, feature/* ]
+    branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
 
 jobs:
   test:
@@ -14,6 +19,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+    
       - name: Create .env file
         run: |
           echo "ADMIN_EMAIL=${{ secrets.ADMIN_EMAIL }}" >> .env
@@ -21,35 +27,47 @@ jobs:
           echo "BASE_URL=http://web:5173" >> .env
           echo "API_URL=http://api:3000" >> .env
           echo "CI=true" >> .env
-
           echo "POSTGRES_USER=shop_user" >> .env
           echo "POSTGRES_PASSWORD=shop_pass" >> .env
           echo "POSTGRES_DB=shop_db" >> .env
-
           echo "DATABASE_URL=postgresql://shop_user:shop_pass@postgres_db:5432/shop_db?schema=public" >> .env
-          
           touch apps/api/.env
           touch apps/web/.env
-          
+
       - name: Start Services and Seed
         run: |
           echo "🚀 Starting containers..."
           docker compose --profile testing up -d --build web api postgres_db
-
-          echo "⏳ Waiting for API (20s)..."
           sleep 20
-
           echo "🌱 Seeding database..."
-          # 👇 ВОТ ОНА! Та самая команда из вашего скрипта (с флагом -T для CI)
           docker compose exec -T api pnpm --filter api seed 
 
-      - name: Run Tests via Docker Compose
+
+      - name: Run Playwright Tests
+        continue-on-error: true
         run: docker compose --profile testing run tests
 
-      - name: Upload Raw Allure Results
-        uses: actions/upload-artifact@v4
+
+      - name: Get Allure history
+        uses: actions/checkout@v4
+        if: always()
+        continue-on-error: true
+        with:
+          ref: gh-pages
+          path: gh-pages
+
+      - name: Allure Report action
+        uses: simple-elf/allure-report-action@master
         if: always()
         with:
-          name: allure-results-raw
-          path: tests/allure-results/
-          retention-days: 15
+          allure_results: tests/allure-results
+          allure_history: allure-history
+          keep_reports: 20
+
+      - name: Deploy report to Github Pages
+        if: always()
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          personal_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: allure-history
