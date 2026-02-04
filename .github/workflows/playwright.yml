@@ -21,6 +21,9 @@ jobs:
           echo "BASE_URL=http://web:5173" >> .env
           echo "API_URL=http://api:3000" >> .env
           echo "CI=true" >> .env
+          
+          touch apps/api/.env
+          touch apps/web/.env
 
       - name: Run Tests via Docker Compose
         run: docker compose up --build --abort-on-container-exit --exit-code-from tests
