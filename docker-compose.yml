@@ -75,9 +75,14 @@ services:
       - BASE_URL=http://web:5173
       - API_URL=http://api:3000
       - CI=true
+
+    ipc: host
+
     volumes:
       - ./tests/allure-results:/app/allure-results
       - ./tests/test-results:/app/test-results
+      - ./tests/playwright-report:/app/playwright-report
+      
     depends_on:
       web:
         condition: service_started
