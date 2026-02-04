@@ -78,7 +78,7 @@ test.describe('Register and Login User', () => {
     });
   });
 
-  test.fixme('TC-API-03: Registration with Existing Username but Different Data', async ({ authApi }) => {
+  test('TC-API-03: Registration with Existing Username but Different Data', async ({ authApi }) => {
     await AllureHelper.apply({
       qaseId: 'SS-6', // ID из твоего описания выше
       owner: 'Eugene Senko',

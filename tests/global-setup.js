@@ -1,14 +1,5 @@
 import fs from 'fs';
 import path from 'path';
-import { execSync } from 'child_process';
-
-const getGitBranch = () => {
-  try {
-    return execSync('git rev-parse --abbrev-ref HEAD').toString().trim();
-  } catch {
-    return process.env.GIT_BRANCH || 'unknown';
-  }
-};
 
 export default async function globalSetup(config) {
   const isCI = !!process.env.CI;
@@ -21,7 +12,6 @@ Project=Playwright Shop System Demo
 TestTypes=UI + API
 UI_BaseURL=${uiBaseUrl}
 API_BaseURL=${apiBaseUrl}
-Branch=${getGitBranch()}
 RunMode=${isCI ? 'CI/CD Pipeline' : 'Local Run'}
 Execution_Workers=${config.workers} 
 OS=${process.platform}
