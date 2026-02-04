@@ -1,67 +1,55 @@
-# Shop System (AQA Edition) 🚀
+# Shop System Automation Framework 🎭
 
-Проект интернет-магазина, оптимизированный для обучения и работы **AQA-инженеров**. Включает в себя автоматизированные скрипты развертывания и стабильный набор тестовых данных.
+[![CI/CD Pipeline](https://github.com/EugeneSinyavski/shop-system-tests/actions/workflows/ci.yml/badge.svg)](https://github.com/EugeneSinyavski/shop-system-tests/actions)
+[![Test Report](https://img.shields.io/badge/Allure-Live_Report-blueviolet)](https://EugeneSinyavski.github.io/shop-system-tests/)
+[![Playwright](https://img.shields.io/badge/Playwright-Test-green)](https://playwright.dev/)
+[![Docker](https://img.shields.io/badge/Docker-Enabled-blue)](https://www.docker.com/)
 
-## 📋 Требования (Prerequisites)
+**Robust E2E testing framework for a full-stack E-commerce platform.**
 
-Перед запуском убедитесь, что у вас установлены:
-* **Node.js**: v20+
-* **pnpm**: v9+
-* **Docker Desktop**: должен быть запущен
-* **Git**
+This project demonstrates a complete automation lifecycle: from Dockerized environment setup and database seeding to test execution and automated reporting via GitHub Pages.
 
----
-
-## ⚡ Быстрый старт
-
-### 1. Полная установка (Первый запуск / Сброс данных)
-Эта команда устанавливает зависимости, генерирует `.env` файлы, собирает Docker-контейнеры, очищает базу данных и наполняет её 50 статичными товарами.
-```bash
-pnpm full-setup
-```
-*В результате в корне проекта появится папка `access-data/` с данными для тестов.*
-
-### 2. Обычный запуск (Для ежедневной работы)
-Если установка уже была произведена и вам нужно просто поднять сервис с сохранением текущего состояния базы данных:
-```bash
-pnpm start-app
-```
-*Команда запускает существующие контейнеры без пересборки и повторного сидирования.*
+🔗 **[View Live Test Report & History](https://EugeneSinyavski.github.io/shop-system-tests/)**
 
 ---
 
-## 🔑 Тестовые данные для AQA
+## 🛠 Tech Stack
 
-Скрипт сидирования автоматически подготавливает среду для автоматизации и сохраняет информацию в локальную папку `access-data/`:
-
-* **`access-data/credentials.md`**: Список учетных записей (Admin и Regular Users) с паролями и прямыми ссылками на страницу входа.
-* **`access-data/seeded-data.json`**: Полный JSON-дамп всех **50 товаров** (названия, ID, категории, цены) для использования во фреймворках автоматизации.
-
-> **Важно:** Эти данные статичны (названия и категории не меняются), что гарантирует стабильность ваших автотестов.
-
----
-
-## 🛠️ Доступные скрипты
-
-| Команда | Описание | Когда использовать |
-| :--- | :--- | :--- |
-| **`pnpm full-setup`** | Установка `node_modules`, билд Docker, **полный сброс и сид БД**, экспорт папки `access-data`. | При первом развертывании или если нужно обновить список товаров. |
-| **`pnpm start-app`** | Запуск контейнеров в фоновом режиме. | Для обычной работы с приложением без потери данных. |
-| **`pnpm gen:envs`** | Автоматическая генерация `.env` файлов из примеров. | Выполняется автоматически внутри `full-setup`. |
+* **Framework:** [Playwright](https://playwright.dev/) (JavaScript/TypeScript)
+* **CI/CD:** GitHub Actions
+* **Containerization:** Docker & Docker Compose
+* **Reporting:** Allure Report (hosted on GitHub Pages)
+* **Package Manager:** pnpm
+* **Database:** PostgreSQL (with automated seeding strategies)
 
 ---
 
-## 🌐 Ссылки проекта
+## ℹ️ About the Project
 
-* **Frontend**: `http://localhost:5173/`
-* **Backend API**: `http://localhost:3000`
-* **Swagger UI (Docs)**: `http://localhost:3000/api-docs`
+This repository contains a **clone/fork** of a full-stack e-commerce application (React + NestJS), used here strictly as a **System Under Test (SUT)**.
+
+**My Contribution & Key Features:**
+While the application code serves as the base, my work focuses on the **Quality Assurance infrastructure**:
+
+* **Infrastructure as Code:** Configured `docker-compose.yml` for isolated testing environments.
+* **CI/CD Pipeline:** Built a GitHub Actions workflow that automatically builds, seeds, tests, and deploys reports.
+* **Database Seeding:** Implemented reliability strategies (waiting for DB readiness, populating test data via seeding scripts).
+* **Reporting:** Configured Allure with history trends to track test stability over time.
 
 ---
 
-## 🗄️ Проектная структура
+## 🧪 Test Coverage
 
-* **/apps/api**: Основное приложение NestJS (Backend).
-* **/apps/web**: Frontend приложение на Vite + React.
-* **/apps/api/prisma/data.ts**: Конфигурационный файл со списком всех тестовых товаров.
-* **/access-data**: Локальная папка с доступами и JSON-данными (генерируется автоматически).
+The framework covers critical business flows using both API and UI layers:
+
+### ✅ UI Tests (E2E)
+* **Authentication:** User/Admin registration and login flows.
+* **Admin Panel:** Access control and dashboard visibility checks.
+* **Shopping Flow:** Product search, Add to Cart, Cart management.
+* **Checkout:** End-to-end order placement simulation.
+
+### ✅ API Tests
+* Direct backend endpoints testing (REST API).
+* Response validation (Status codes, JSON Schema).
+* **Data Preparation:** Custom scripts to generate test data before UI tests run.
+
