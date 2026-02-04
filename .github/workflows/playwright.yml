@@ -26,7 +26,7 @@ jobs:
           touch apps/web/.env
 
       - name: Run Tests via Docker Compose
-        run: docker compose up --build --abort-on-container-exit --exit-code-from tests
+        run: docker compose --profile testing up --build --abort-on-container-exit --exit-code-from tests
 
       - uses: actions/upload-artifact@v4
         if: always() # Сохранять даже если тесты упали
