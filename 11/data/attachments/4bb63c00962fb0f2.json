@@ -1,0 +1,5 @@
+{
+  "message": "Email \"user-2f3494b4-bc39-4529-94d2-b68e201bc9ad@example.com\" already exists.",
+  "error": "Conflict",
+  "statusCode": 409
+}
