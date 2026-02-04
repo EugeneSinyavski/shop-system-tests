@@ -30,18 +30,22 @@ jobs:
           
           touch apps/api/.env
           touch apps/web/.env
-      - name: Start Services and Seed Database
+          
+      - name: Start Services and Seed
         run: |
-    
+          echo "🚀 Starting containers..."
           docker compose --profile testing up -d --build web api postgres_db
 
-          sleep 15
+          echo "⏳ Waiting for API (20s)..."
+          sleep 20
 
-          docker compose exec -T api npx prisma db seed    
+          echo "🌱 Seeding database..."
+          # 👇 ВОТ ОНА! Та самая команда из вашего скрипта (с флагом -T для CI)
+          docker compose exec -T api pnpm --filter api seed 
 
       - name: Run Tests via Docker Compose
         run: docker compose --profile testing run tests
-        
+
       - name: Upload Raw Allure Results
         uses: actions/upload-artifact@v4
         if: always()
