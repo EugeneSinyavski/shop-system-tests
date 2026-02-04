@@ -21,6 +21,10 @@ jobs:
           echo "BASE_URL=http://web:5173" >> .env
           echo "API_URL=http://api:3000" >> .env
           echo "CI=true" >> .env
+
+          echo "POSTGRES_USER=shop_user" >> .env
+          echo "POSTGRES_PASSWORD=shop_pass" >> .env
+          echo "POSTGRES_DB=shop_db" >> .env
           
           touch apps/api/.env
           touch apps/web/.env
