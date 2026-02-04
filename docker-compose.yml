@@ -77,12 +77,13 @@ services:
       - CI=true
 
     ipc: host
+    shm_size: '2gb'
 
     volumes:
       - ./tests/allure-results:/app/allure-results
       - ./tests/test-results:/app/test-results
       - ./tests/playwright-report:/app/playwright-report
-      
+
     depends_on:
       web:
         condition: service_started
