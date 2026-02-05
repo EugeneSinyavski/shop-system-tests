@@ -14,7 +14,7 @@ ENV LC_ALL ru_RU.UTF-8
 COPY package.json package-lock.json* ./
 
 
-RUN npm install
+RUN npm ci
 
 
 COPY . .
