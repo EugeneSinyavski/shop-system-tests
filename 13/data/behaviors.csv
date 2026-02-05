@@ -1,0 +1,5 @@
+"BROKEN","EPIC","FAILED","FEATURE","PASSED","SKIPPED","STORY","UNKNOWN"
+"0","API Tests","1","Authentication","1","0","Negative Scenarios","0"
+"0","API Tests","0","Authentication","1","0","User Registration","0"
+"0","UI Tests","0","Orders","1","0","Critical Path (E2E)","0"
+"0","UI Tests","0","Admin Access","1","0","Header Visibility","0"
