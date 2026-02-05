@@ -1,0 +1,1 @@
+[{"values":["Playwright Shop System Demo"],"name":"Project"},{"values":["UI + API"],"name":"TestTypes"},{"values":["http://web:5173"],"name":"UI_BaseURL"},{"values":["http://api:3000"],"name":"API_BaseURL"},{"values":["CI/CD Pipeline"],"name":"RunMode"},{"values":["1 "],"name":"Execution_Workers"},{"values":["linux"],"name":"OS"},{"values":["v24.11.1"],"name":"NodeVersion"}]
