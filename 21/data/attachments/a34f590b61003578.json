@@ -1,0 +1,10 @@
+{
+  "id": 13,
+  "firstname": "Аверкий",
+  "lastname": "Прохоров",
+  "phoneNumber": "+71950134756",
+  "email": "user-5a837457-c673-4c17-b015-e3727f99ff5f@example.com",
+  "username": "user-5a837457-c673-4c17-b015-e3727f99ff5f",
+  "role": "USER",
+  "bucket_id": 13
+}
