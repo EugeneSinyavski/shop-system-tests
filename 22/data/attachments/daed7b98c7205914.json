@@ -1,0 +1,9 @@
+{
+  "firstname": "Карл",
+  "lastname": "Тарасов",
+  "phoneNumber": "+74271327000",
+  "email": "user-baf5afb3-0072-49f4-ab27-b526a6fa7745@example.com",
+  "username": "user-baf5afb3-0072-49f4-ab27-b526a6fa7745",
+  "password": "Password123!",
+  "role": "USER"
+}
